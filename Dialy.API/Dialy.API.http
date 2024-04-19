@@ -1,0 +1,6 @@
+@Daily.API_HostAddress = http://localhost:5100
+
+GET {{Daily.API_HostAddress}}/api/Memo/GetAllMemoList
+Accept: application/json
+
+###

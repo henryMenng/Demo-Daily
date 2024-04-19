@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	<!--尝试将所有内容（包括资源文件等）打包进单个 .exe 文件 -->
+	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resource\Fonts\digital_display.ttf" />
+    <None Remove="Resource\Fonts\iconfont.ttf" />
+    <None Remove="Resource\Images\login.png" />
+    <None Remove="Resource\Images\user.jpg" />
+    <None Remove="Resource\Images\wind.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+    <Resource Include="Resource\Fonts\digital_display.ttf" />
+    <Resource Include="Resource\Fonts\iconfont.ttf" />
+    <Resource Include="Resource\Images\login.png" />
+    <Resource Include="Resource\Images\user.jpg" />
+    <Resource Include="Resource\Images\wind.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\" />
+  </ItemGroup>
+
+</Project>

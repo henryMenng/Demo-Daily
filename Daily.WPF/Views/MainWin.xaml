@@ -1,0 +1,191 @@
+﻿<Window x:Class="Daily.WPF.Views.MainWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Daily.WPF.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        Title="MainWin"
+        Width="1200"
+        Height="700"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="微软雅黑"
+        mc:Ignorable="d">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" />
+    </WindowChrome.WindowChrome>
+
+    <materialDesign:DialogHost DialogTheme="Inherit"
+                               Identifier="RootDialog"
+                               SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <StackPanel Width="230"
+                            Margin="0,25,0,0">
+                    <Image Width="70"
+                           Height="70"
+                           Source="{Binding Avatar}">
+                        <Image.Clip>
+                            <EllipseGeometry Center="35 35"
+                                             RadiusX="35"
+                                             RadiusY="35" />
+                        </Image.Clip>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ChangeAvatarCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                    <ItemsControl ItemsSource="{Binding LeftMenuInfoList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="230"
+                                        Height="50"
+                                        Margin="0,10,0,0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="{DynamicResource MaterialDesignBody}"
+                                        Style="{StaticResource OperateBtnStyle}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.ChangeUserControlCom, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                   CommandParameter="{Binding ViewName}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Width="25"
+                                                                 Height="25"
+                                                                 Margin="10,0"
+                                                                 VerticalAlignment="Center"
+                                                                 Kind="{Binding Icon}" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="15"
+                                                   Text="{Binding MenuName}" />
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!--<Button Width="230"
+                            Height="50"
+                            Margin="0,20,0,5"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource OperateBtnStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Width="25"
+                                                     Height="25"
+                                                     Margin="10,0"
+                                                     VerticalAlignment="Center"
+                                                     Kind="Home" />
+                            <TextBlock Margin="10,0,0,0"
+                                       VerticalAlignment="Center"
+                                       FontSize="15"
+                                       Text="首页" />
+                        </StackPanel>
+                    </Button>-->
+                </StackPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+
+            <DockPanel>
+                <materialDesign:ColorZone Padding="16"
+                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                          DockPanel.Dock="Top"
+                                          Mode="PrimaryMid">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ToggleButton x:Name="MenuToggleButton"
+                                          AutomationProperties.Name="HamburgerToggleButton"
+                                          IsChecked="{Binding IsLeftDrawerOpen}"
+                                          Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+
+                            <Button Margin="24,0,0,0"
+                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                    Command="{Binding RegionGoBackCom}"
+                                    Content="{materialDesign:PackIcon Kind=ArrowLeft,
+                                                                      Size=24}"
+                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="上一页" />
+
+                            <Button Margin="16,0,0,0"
+                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                    Command="{Binding RegionGoForwardCom}"
+                                    Content="{materialDesign:PackIcon Kind=ArrowRight,
+                                                                      Size=24}"
+                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="下一页" />
+                            <TextBlock Margin="20,0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       AutomationProperties.Name="Material Design In XAML Toolkit"
+                                       FontSize="22"
+                                       Text="我的日常" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right"
+                                    DockPanel.Dock="Right"
+                                    Orientation="Horizontal">
+                            <Image Width="30"
+                                   Height="30"
+                                   Margin="10,0"
+                                   Source="{Binding Avatar}">
+                                <!--  裁剪  -->
+                                <Image.Clip>
+                                    <EllipseGeometry Center="15 15"
+                                                     RadiusX="15"
+                                                     RadiusY="15" />
+                                </Image.Clip>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding ChangeAvatarCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Image>
+                            <Button Height="35"
+                                    VerticalAlignment="Top"
+                                    Content="&#xe624;"
+                                    FontSize="25"
+                                    Click="Min_Click"
+                                    Style="{StaticResource OperateBtnStyle}" />
+                            <Button Height="35"
+                                    VerticalAlignment="Top"
+                                    Content="&#xe600;"
+                                    FontSize="25"
+                                    Click="MaxOrNormal_Click"
+                                    Style="{StaticResource OperateBtnStyle}" />
+                            <Button Height="35"
+                                    VerticalAlignment="Top"
+                                    FontSize="25"
+                                    Click="Close_Click"
+                                    Content="&#xe609;"
+                                    Style="{StaticResource OperateBtnStyle}" />
+                        </StackPanel>
+
+                    </DockPanel>
+                </materialDesign:ColorZone>
+
+                <!--  内容  -->
+                <Grid>
+                    <ContentControl prism:RegionManager.RegionName="MainViewRegion" />
+                    <md:Snackbar Height="50"
+                                 Margin="0,0,10,30"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 MessageQueue="{Binding MsgQueue}" />
+                </Grid>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+</Window>
